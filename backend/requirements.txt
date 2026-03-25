@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+python-dotenv
+pycryptodome
+passlib[bcrypt]
+qrcode[pil]
+python-jose[cryptography]
+pyotp
+cryptography
