@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from core.config import settings
 from core.database import init_db
@@ -27,6 +28,20 @@ def create_application(
     include_analytics: bool = False,
 ) -> FastAPI:
     app = FastAPI(title=title, version=settings.app_version, lifespan=lifespan)
+
+    # Allow browser clients (Next.js dev/prod) to call API endpoints.
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=[
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "http://localhost:3001",
+            "http://127.0.0.1:3001",
+        ],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
     @app.get("/health", tags=["system"])
     def healthcheck():

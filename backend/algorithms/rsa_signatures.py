@@ -10,9 +10,6 @@ PRIVATE_KEY_PATH = KEYS_DIR / "private_key.pem"
 PUBLIC_KEY_PATH = KEYS_DIR / "public_key.pem"
 
 
-# -----------------------------
-# Generate RSA keys
-# -----------------------------
 def generate_rsa_keys():
     KEYS_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -23,7 +20,6 @@ def generate_rsa_keys():
 
     public_key = private_key.public_key()
 
-    # Write private key
     with open(PRIVATE_KEY_PATH, "wb") as f:
         f.write(
             private_key.private_bytes(
@@ -33,7 +29,6 @@ def generate_rsa_keys():
             )
         )
 
-    # Write public key
     with open(PUBLIC_KEY_PATH, "wb") as f:
         f.write(
             public_key.public_bytes(
@@ -45,9 +40,6 @@ def generate_rsa_keys():
     return {"message": "RSA key pair generated successfully"}
 
 
-# -----------------------------
-# Load existing keys
-# -----------------------------
 def load_private_key():
     if not PRIVATE_KEY_PATH.exists():
         raise RuntimeError("RSA private key not found. Generate keys first.")
@@ -62,9 +54,6 @@ def load_public_key():
         return serialization.load_pem_public_key(f.read())
 
 
-# -----------------------------
-# Sign data
-# -----------------------------
 def sign_data(data: str) -> str:
     private_key = load_private_key()
 
@@ -77,9 +66,6 @@ def sign_data(data: str) -> str:
     return base64.b64encode(signature).decode()
 
 
-# -----------------------------
-# Verify signature
-# -----------------------------
 def verify_signature(data: str, signature: str) -> bool:
     public_key = load_public_key()
 

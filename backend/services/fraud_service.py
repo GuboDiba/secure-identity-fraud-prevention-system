@@ -75,3 +75,15 @@ def get_fraud_logs() -> list[dict]:
             """
         ).fetchall()
     return [dict(row) for row in rows]
+
+
+def get_user_activity() -> list[dict]:
+    with get_db() as connection:
+        rows = connection.execute(
+            """
+            SELECT username, action, ip, device, time
+            FROM user_activity
+            ORDER BY time DESC
+            """
+        ).fetchall()
+    return [dict(row) for row in rows]
